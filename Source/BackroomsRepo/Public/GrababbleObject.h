@@ -32,4 +32,7 @@ public:
 	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Money")
 	UWidgetComponent* WidgetComponent;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Money")
+	FText Name;
 };

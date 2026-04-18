@@ -11,7 +11,8 @@ AGrababbleObject::AGrababbleObject()
 	
 	Mesh = CreateDefaultSubobject<UStaticMeshComponent>("Mesh");
 	
-	
+	WidgetComponent = CreateDefaultSubobject<UWidgetComponent>("WidgetComponent");
+	WidgetComponent->SetupAttachment(Mesh);
 }
 
 // Called when the game starts or when spawned
