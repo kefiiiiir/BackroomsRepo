@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "Components/WidgetComponent.h"
 #include "GameFramework/Actor.h"
 #include "GrababbleObject.generated.h"
 
@@ -25,4 +26,10 @@ public:
 
 	UPROPERTY(VisibleDefaultsOnly, Category=Mesh)
 	UStaticMeshComponent* Mesh;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Money")
+	int Price;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Money")
+	UWidgetComponent* WidgetComponent;
 };
