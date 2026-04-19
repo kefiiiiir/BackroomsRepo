@@ -51,6 +51,9 @@ class ABackroomsRepoCharacter : public ACharacter
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category=Input, meta=(AllowPrivateAccess = "true"))
 	UInputAction* GrabAction;
 	
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category=Input, meta=(AllowPrivateAccess = "true"))
+	UInputAction* SprintAction;
+	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category=Input, meta=(AllowPrivateAccess = "true"))
 	UPhysicalAnimationComponent* PhysicalAnimationComponent;
 
@@ -104,5 +107,30 @@ public:
 	
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 	UNiagaraComponent* Beam;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Walk")
+	float WalkSpeed;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Walk")
+	float SprintSpeed;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Walk")
+	float Stamina;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Walk")
+	float MaxStamina;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Walk")
+	float StaminaDrainRate;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Walk")
+	float StaminaRegenRate;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Walk")
+	bool bIsSprinting;
+	
+	virtual void Tick(float DeltaTime) override;
+	
+	
 };
 

@@ -10,6 +10,7 @@
 #include "GrabComponent.h"
 #include "InputActionValue.h"
 #include "Engine/LocalPlayer.h"
+#include "GameFramework/CharacterMovementComponent.h"
 #include "Kismet/KismetSystemLibrary.h"
 #include "PhysicsEngine/PhysicalAnimationComponent.h"
 
@@ -57,6 +58,8 @@ ABackroomsRepoCharacter::ABackroomsRepoCharacter()
 	Beam->SetupAttachment(GetMesh(), FName("RightHand"));
 	
 	bReplicates = true;
+	
+	PrimaryActorTick.bCanEverTick = true;
 }
 
 void ABackroomsRepoCharacter::BeginPlay()
@@ -131,4 +134,9 @@ void ABackroomsRepoCharacter::Look(const FInputActionValue& Value)
 		AddControllerYawInput(LookAxisVector.X);
 		AddControllerPitchInput(LookAxisVector.Y);
 	}
+}
+
+void ABackroomsRepoCharacter::Tick(float DeltaTime)
+{
+	Super::Tick(DeltaTime);
 }
