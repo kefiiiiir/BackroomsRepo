@@ -23,6 +23,8 @@ void UGrabComponent::Grab()
 {
 	ABackroomsRepoCharacter* Char = Cast<ABackroomsRepoCharacter>(GetOwner());
 	if (!Char) return;
+	
+	Char->Beam->Activate();
 }
 
 void UGrabComponent::UnGrab()

@@ -53,6 +53,8 @@ ABackroomsRepoCharacter::ABackroomsRepoCharacter()
 	
 	PhysicsHandle = CreateDefaultSubobject<UPhysicsHandleComponent>(TEXT("PhysHandle"));
 	
+	Beam = CreateDefaultSubobject<UNiagaraComponent>(TEXT("Beam"));
+	Beam->SetupAttachment(GetMesh(), FName("RightHand"));
 }
 
 void ABackroomsRepoCharacter::BeginPlay()
