@@ -55,6 +55,8 @@ ABackroomsRepoCharacter::ABackroomsRepoCharacter()
 	
 	Beam = CreateDefaultSubobject<UNiagaraComponent>(TEXT("Beam"));
 	Beam->SetupAttachment(GetMesh(), FName("RightHand"));
+	
+	bReplicates = true;
 }
 
 void ABackroomsRepoCharacter::BeginPlay()

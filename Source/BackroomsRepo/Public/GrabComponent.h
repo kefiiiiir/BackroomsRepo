@@ -52,6 +52,7 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	bool bGrabbing;
 
+
 private:
 
 	bool bWasLookHoldActive = false;

@@ -6,6 +6,7 @@
 #include "GameFramework/PlayerController.h"
 #include "Components/SkeletalMeshComponent.h"
 #include "Camera/CameraComponent.h"
+#include "Net/UnrealNetwork.h"
 #include "PhysicsEngine/BodyInstance.h"
 
 UGrabComponent::UGrabComponent()
@@ -21,6 +22,7 @@ void UGrabComponent::BeginPlay()
 
 void UGrabComponent::Grab()
 {
+	
 	ABackroomsRepoCharacter* Char = Cast<ABackroomsRepoCharacter>(GetOwner());
 	if (!Char) return;
 	
@@ -42,7 +44,6 @@ void UGrabComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorC
 	
 	APlayerController* PC = Cast<APlayerController>(Char->GetController());
 	if (!PC) return;
-
+	
 	bHoldLook = PC->IsInputKeyDown(LookHoldKey);
 }
-
