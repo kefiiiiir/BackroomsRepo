@@ -10,6 +10,7 @@
 #include "GrabComponent.h"
 #include "InputActionValue.h"
 #include "Engine/LocalPlayer.h"
+#include "Kismet/KismetSystemLibrary.h"
 #include "PhysicsEngine/PhysicalAnimationComponent.h"
 
 DEFINE_LOG_CATEGORY(LogTemplateCharacter);
@@ -50,8 +51,7 @@ ABackroomsRepoCharacter::ABackroomsRepoCharacter()
 	LookLocation = CreateDefaultSubobject<USceneComponent>(TEXT("LookLocation"));
 	LookLocation->SetupAttachment(GetFirstPersonCameraComponent());
 	
-	PhysicsConstraintComponent = CreateDefaultSubobject<UPhysicsConstraintComponent>(TEXT("PhysConstraintComponent"));
-	PhysicsConstraintComponent->SetupAttachment(GetMesh(), TEXT("LeftHand"));
+	PhysicsHandle = CreateDefaultSubobject<UPhysicsHandleComponent>(TEXT("PhysHandle"));
 	
 }
 
@@ -92,8 +92,8 @@ void ABackroomsRepoCharacter::SetupPlayerInputComponent(UInputComponent* PlayerI
 		EnhancedInputComponent->BindAction(LookAction, ETriggerEvent::Triggered, this, &ABackroomsRepoCharacter::Look);
 		
 		// Grabbing
-		EnhancedInputComponent->BindAction(GrabAction, ETriggerEvent::Started, this, &ABackroomsRepoCharacter::StartGrab);
-		EnhancedInputComponent->BindAction(GrabAction, ETriggerEvent::Completed, this, &ABackroomsRepoCharacter::StopGrab);
+		EnhancedInputComponent->BindAction(GrabAction, ETriggerEvent::Started, GrabComponent, &UGrabComponent::Grab);
+		EnhancedInputComponent->BindAction(GrabAction, ETriggerEvent::Completed, GrabComponent, &UGrabComponent::UnGrab);
 
 	}
 	else
@@ -127,14 +127,4 @@ void ABackroomsRepoCharacter::Look(const FInputActionValue& Value)
 		AddControllerYawInput(LookAxisVector.X);
 		AddControllerPitchInput(LookAxisVector.Y);
 	}
-}
-
-void ABackroomsRepoCharacter::StartGrab()
-{
-	bIsGrabPressed = true;
-}
-
-void ABackroomsRepoCharacter::StopGrab()
-{
-	bIsGrabPressed = false;
 }

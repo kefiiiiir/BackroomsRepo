@@ -3,9 +3,9 @@
 #include "GrabComponent.h"
 
 #include "BackroomsRepo/BackroomsRepoCharacter.h"
-#include "GameFramework/Character.h"
 #include "GameFramework/PlayerController.h"
 #include "Components/SkeletalMeshComponent.h"
+#include "Camera/CameraComponent.h"
 #include "PhysicsEngine/BodyInstance.h"
 
 UGrabComponent::UGrabComponent()
@@ -19,21 +19,23 @@ void UGrabComponent::BeginPlay()
 	Super::BeginPlay();
 }
 
-void UGrabComponent::Grab(UPrimitiveComponent* Target)
+void UGrabComponent::Grab()
 {
 	ABackroomsRepoCharacter* Char = Cast<ABackroomsRepoCharacter>(GetOwner());
 	if (!Char) return;
-	
-	Char->PhysicsConstraintComponent->SetConstrainedComponents(Char->GetMesh(), FName("LeftHand"), Target, NAME_None);
-	
-	bGrabbing = true;
+}
+
+void UGrabComponent::UnGrab()
+{
+	ABackroomsRepoCharacter* Char = Cast<ABackroomsRepoCharacter>(GetOwner());
+	if (!Char) return;
 }
 
 void UGrabComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
 {
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
 	
-	ACharacter* Char = Cast<ACharacter>(GetOwner());
+	ABackroomsRepoCharacter* Char = Cast<ABackroomsRepoCharacter>(GetOwner());
 	if (!Char) return;
 	
 	APlayerController* PC = Cast<APlayerController>(Char->GetController());

@@ -8,6 +8,7 @@
 #include "PhysicsEngine/PhysicalAnimationComponent.h"
 #include "Components/BoxComponent.h"
 #include "PhysicsEngine/PhysicsConstraintComponent.h"
+#include "PhysicsEngine/PhysicsHandleComponent.h"
 #include "BackroomsRepoCharacter.generated.h"
 
 class UInputComponent;
@@ -94,13 +95,10 @@ public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 	bool bIsGrabPressed = false;
 	
-	void StartGrab();
-	void StopGrab();
-	
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 	USceneComponent* LookLocation;
 	
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
-	UPhysicsConstraintComponent* PhysicsConstraintComponent;
+	UPhysicsHandleComponent* PhysicsHandle;
 };
 

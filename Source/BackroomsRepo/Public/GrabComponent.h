@@ -26,7 +26,10 @@ public:
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 
 	UFUNCTION(BlueprintCallable)
-	void Grab(UPrimitiveComponent* Target);
+	void Grab();
+	
+	UFUNCTION(BlueprintCallable)
+	void UnGrab();
 
 	/** When held (default: RMB), arms are forced to extend toward the view direction. */
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Arms|LookHold")
