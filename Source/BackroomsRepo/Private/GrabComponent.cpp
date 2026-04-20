@@ -11,8 +11,7 @@
 
 UGrabComponent::UGrabComponent()
 {
-	PrimaryComponentTick.bCanEverTick = false;
-	PrimaryComponentTick.TickGroup = TG_PostPhysics;
+	PrimaryComponentTick.bCanEverTick = true;
 }
 
 void UGrabComponent::BeginPlay()
