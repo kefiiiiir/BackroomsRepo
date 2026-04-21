@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "Particles/ParticleSystemComponent.h"
 #include "Components/WidgetComponent.h"
 #include "GameFramework/Actor.h"
 #include "GrababbleObject.generated.h"
@@ -35,4 +36,22 @@ public:
 	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Money")
 	FText Name;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Physics")
+	bool bIsBreakable;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Physics")
+	float breakImpulseThreshold;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Physics")
+	UParticleSystemComponent* BreakFX;
+	
+	UFUNCTION(BlueprintCallable)
+	void OnMeshHit(
+		UPrimitiveComponent* HitComp,
+		AActor* OtherActor,
+		UPrimitiveComponent* OtherComp,
+		FVector NormalImpulse,
+		const FHitResult& Hit
+		);
 };
