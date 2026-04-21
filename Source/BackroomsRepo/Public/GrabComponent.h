@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "GrababbleObject.h"
 #include "InputCoreTypes.h"
 #include "Components/ActorComponent.h"
 #include "GrabComponent.generated.h"
@@ -51,7 +52,20 @@ public:
 	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	bool bGrabbing;
-
+	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	float Distance;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	AActor* GrabbedObject;
+	
+	bool bIsGrabbing;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Sounds")
+	USoundWave* GrabSound;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Sounds")
+	USoundWave* UnGrabSound;
 
 private:
 
