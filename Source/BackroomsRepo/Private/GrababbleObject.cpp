@@ -4,6 +4,7 @@
 #include "GrababbleObject.h"
 
 #include "AsyncTreeDifferences.h"
+#include "Kismet/GameplayStatics.h"
 
 // Sets default values
 AGrababbleObject::AGrababbleObject()
@@ -49,7 +50,17 @@ void AGrababbleObject::OnMeshHit(
 	float ImpactStrength = NormalImpulse.Size();
 
 	if (ImpactStrength < breakImpulseThreshold)
+	{
+		float CurrentTime = GetWorld()->GetTimeSeconds();
+
+		if (CurrentTime - LastHitTime < HitCooldown)
+			return;
+
+		LastHitTime = CurrentTime;
+
+		UGameplayStatics::PlaySoundAtLocation(GetWorld(), HitSound, Mesh->GetComponentLocation());
 		return;
+	}
 
 	Mesh->DestroyComponent();
 
