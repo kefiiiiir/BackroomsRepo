@@ -54,6 +54,14 @@ ABackroomsRepoCharacter::ABackroomsRepoCharacter()
 	
 	PhysicsHandle = CreateDefaultSubobject<UPhysicsHandleComponent>(TEXT("PhysHandle"));
 	
+	PhysicsHandle->InterpolationSpeed = 15.f;
+
+	PhysicsHandle->LinearStiffness = 5000.f;
+	PhysicsHandle->LinearDamping = 200.f;
+
+	PhysicsHandle->AngularStiffness = 5000.f;
+	PhysicsHandle->AngularDamping = 200.f;
+	
 	Beam = CreateDefaultSubobject<UNiagaraComponent>(TEXT("Beam"));
 	Beam->SetupAttachment(GetMesh(), FName("RightHand"));
 	
