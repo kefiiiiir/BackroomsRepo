@@ -62,4 +62,7 @@ public:
 	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Sounds")
 	float HitCooldown = 0.2f;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Physics")
+	float DamageMultiplier = 0.01f;
 };
