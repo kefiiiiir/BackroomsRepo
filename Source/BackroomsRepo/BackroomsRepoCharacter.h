@@ -129,6 +129,18 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Walk")
 	bool bIsSprinting;
 	
+	UPROPERTY()
+	TArray<FName> UnlockedItems;
+	
+	UPROPERTY(EditDefaultsOnly, Category = "UI")
+	TSubclassOf<UUserWidget> UnlockWidgetClass;
+
+	UPROPERTY()
+	UUserWidget* UnlockWidgetInstance;
+	
+	UFUNCTION(BlueprintCallable)
+	void UnlockItem(FName ItemID);
+	
 	virtual void Tick(float DeltaTime) override;
 	
 	

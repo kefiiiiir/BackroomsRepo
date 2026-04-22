@@ -144,6 +144,30 @@ void ABackroomsRepoCharacter::Look(const FInputActionValue& Value)
 	}
 }
 
+void ABackroomsRepoCharacter::UnlockItem(FName ItemID)
+{
+	if (!UnlockedItems.Contains(ItemID))
+	{
+		UnlockedItems.Add(ItemID);
+
+		UE_LOG(LogTemplateCharacter, Log, TEXT("Unlocked Item: %s"), *ItemID.ToString());
+
+		if (UnlockWidgetClass)
+		{
+			if (!UnlockWidgetInstance)
+			{
+				UnlockWidgetInstance = CreateWidget<UUserWidget>(GetWorld(), UnlockWidgetClass);
+			}
+
+			if (UnlockWidgetInstance && !UnlockWidgetInstance->IsInViewport())
+			{
+				UnlockWidgetInstance->AddToViewport(100);
+				UnlockWidgetInstance->CallFunctionByNameWithArguments(TEXT("PlayAppearence"), *GLog, nullptr, true);
+			}
+		}
+	}
+}
+
 void ABackroomsRepoCharacter::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);

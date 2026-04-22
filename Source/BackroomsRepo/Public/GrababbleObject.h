@@ -28,14 +28,14 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category=Mesh)
 	UStaticMeshComponent* Mesh;
 	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="ID")
+	FName ID;
+	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Money")
 	int Price;
 	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Money")
 	UWidgetComponent* WidgetComponent;
-	
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Money")
-	FText Name;
 	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Physics")
 	bool bIsBreakable;
