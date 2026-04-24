@@ -171,4 +171,23 @@ void ABackroomsRepoCharacter::UnlockItem(FName ItemID)
 void ABackroomsRepoCharacter::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
+	
+	if (bIsSprinting && Stamina >= 0.f)
+	{
+		GetCharacterMovement()->MaxWalkSpeed = SprintSpeed;
+		
+		Stamina -= FMath::Clamp(StaminaDrainRate * DeltaTime, 0.f, MaxStamina);
+	} else
+	{
+		GetCharacterMovement()->MaxWalkSpeed = WalkSpeed;
+		
+		Stamina += FMath::Clamp(StaminaRegenRate * DeltaTime, 0.f, MaxStamina);
+	}
+	
+	if (bIsSprinting && Stamina <= 0.f)
+		bIsSprinting = false;
+	
+	CurrentFOV = FMath::FInterpTo(CurrentFOV, TargetFOV, DeltaTime, 5.0f);
+	
+	GetFirstPersonCameraComponent()->SetFieldOfView(CurrentFOV);
 }

@@ -56,6 +56,7 @@ class ABackroomsRepoCharacter : public ACharacter
 	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category=Input, meta=(AllowPrivateAccess = "true"))
 	UPhysicalAnimationComponent* PhysicalAnimationComponent;
+	
 
 public:
 	ABackroomsRepoCharacter();
@@ -128,6 +129,15 @@ public:
 	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Walk")
 	bool bIsSprinting;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Walk")
+	bool bIsInfiniteStamina;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Camera")
+	float TargetFOV;
+	
+	UPROPERTY()
+	float CurrentFOV;
 	
 	UPROPERTY()
 	TArray<FName> UnlockedItems;
