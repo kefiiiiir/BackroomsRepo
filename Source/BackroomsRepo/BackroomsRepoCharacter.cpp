@@ -172,19 +172,28 @@ void ABackroomsRepoCharacter::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 	
-	if (bIsSprinting && Stamina >= 0.f)
+	if (bIsSprinting && Stamina > 0.f)
 	{
 		GetCharacterMovement()->MaxWalkSpeed = SprintSpeed;
-		
-		Stamina -= FMath::Clamp(StaminaDrainRate * DeltaTime, 0.f, MaxStamina);
-	} else
+
+		Stamina = FMath::Clamp(
+			Stamina - StaminaDrainRate * DeltaTime,
+			0.f,
+			MaxStamina
+		);
+	}
+	else
 	{
 		GetCharacterMovement()->MaxWalkSpeed = WalkSpeed;
-		
-		Stamina += FMath::Clamp(StaminaRegenRate * DeltaTime, 0.f, MaxStamina);
+
+		Stamina = FMath::Clamp(
+			Stamina + StaminaRegenRate * DeltaTime,
+			0.f,
+			MaxStamina
+		);
 	}
-	
-	if (bIsSprinting && Stamina <= 0.f)
+
+	if (Stamina <= 0.f)
 		bIsSprinting = false;
 	
 	CurrentFOV = FMath::FInterpTo(CurrentFOV, TargetFOV, DeltaTime, 5.0f);
