@@ -1,6 +1,6 @@
-#include "LocalizedAudioComponent.h"
+#include "LocalizedAudio/LocalizedAudioComponent.h"
 #include "DefaultGameInstance.h"
-#include "LocalizedSound.h"
+#include "LocalizedAudio/LocalizedSound.h"
 
 USoundBase* ULocalizedAudioComponent::GetLocalizedSound(FName SoundKey)
 {

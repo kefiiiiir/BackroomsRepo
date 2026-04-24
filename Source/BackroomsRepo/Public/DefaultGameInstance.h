@@ -4,7 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "Engine/GameInstance.h"
-#include "LanguageTypes.h"
+#include "LocalizedAudio/LanguageTypes.h"
 #include "DefaultGameInstance.generated.h"
 
 UCLASS()
