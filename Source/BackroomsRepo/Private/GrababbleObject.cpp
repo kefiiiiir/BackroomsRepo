@@ -56,7 +56,7 @@ void AGrababbleObject::OnMeshHit(
 
 	LastHitTime = CurrentTime;
 
-	if (ImpactStrength < 0.5f)
+	if (ImpactStrength < breakImpulseThreshold)
 		return;
 	// Convert impact → damage
 	float Damage = ImpactStrength * DamageMultiplier;
