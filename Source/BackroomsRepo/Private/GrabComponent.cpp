@@ -5,10 +5,7 @@
 #include "BackroomsRepo/BackroomsRepoCharacter.h"
 #include "GameFramework/PlayerController.h"
 #include "Components/SkeletalMeshComponent.h"
-#include "Camera/CameraComponent.h"
-#include "Kismet/GameplayStatics.h"
 #include "PhysicsEngine/BodyInstance.h"
-#include "ProfilingDebugging/CookStats.h"
 
 UGrabComponent::UGrabComponent()
 {
@@ -53,12 +50,6 @@ void UGrabComponent::Grab()
 		
 		//UGameplayStatics::PlaySoundAtLocation(GetWorld(), GrabSound, Hit.GetComponent()->GetComponentLocation());
 	//}
-	Char->bMonsterSpawnedForThisPickup = false;
-	
-	Char->TrySpawnMonster();
-	
-	
-
 }
 
 void UGrabComponent::UnGrab()
