@@ -136,6 +136,12 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Camera")
 	float TargetFOV;
 	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Grabbing")
+	AActor* HitActor;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Grabbing")
+	bool bIsGrabbing;
+	
 	UPROPERTY()
 	float CurrentFOV;
 	
@@ -150,6 +156,10 @@ public:
 	
 	UFUNCTION(BlueprintCallable)
 	void UnlockItem(FName ItemID);
+	
+	UPROPERTY()
+	bool bMonsterSpawnedForThisPickup = false;
+
 	
 	virtual void Tick(float DeltaTime) override;
 	

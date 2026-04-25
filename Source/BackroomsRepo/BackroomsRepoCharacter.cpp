@@ -9,6 +9,7 @@
 #include "EnhancedInputSubsystems.h"
 #include "GrabComponent.h"
 #include "InputActionValue.h"
+#include "NavigationSystem.h"
 #include "Engine/LocalPlayer.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "Kismet/KismetSystemLibrary.h"
