@@ -3,8 +3,10 @@
 #include "GrabComponent.h"
 
 #include "BackroomsRepo/BackroomsRepoCharacter.h"
+#include "Camera/CameraComponent.h"
 #include "GameFramework/PlayerController.h"
 #include "Components/SkeletalMeshComponent.h"
+#include "Kismet/GameplayStatics.h"
 #include "PhysicsEngine/BodyInstance.h"
 
 UGrabComponent::UGrabComponent()
@@ -57,16 +59,16 @@ void UGrabComponent::UnGrab()
 	ABackroomsRepoCharacter* Char = Cast<ABackroomsRepoCharacter>(GetOwner());
 	if (!Char) return;
 	
-	//Char->Beam->Deactivate();
+	Char->Beam->Deactivate();
 	
-	//if (bIsGrabbing)
-	//{
-		//Char->PhysicsHandle->ReleaseComponent();
-		//bIsGrabbing = false;
-		//GrabbedObject = nullptr;
-	//}
+	if (bIsGrabbing)
+	{
+		Char->PhysicsHandle->ReleaseComponent();
+		bIsGrabbing = false;
+		GrabbedObject = nullptr;
+	}
 	
-	//UGameplayStatics::PlaySoundAtLocation(GetWorld(), UnGrabSound, Char->GetActorLocation());
+	UGameplayStatics::PlaySoundAtLocation(GetWorld(), UnGrabSound, Char->GetActorLocation());
 }
 
 
@@ -81,6 +83,30 @@ void UGrabComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorC
 	if (!PC) return;
 	
 	bHoldLook = PC->IsInputKeyDown(LookHoldKey);
+	
+	if (bIsGrabbing && Char->HitActor)
+	{
+		FVector Start = Char->GetFirstPersonCameraComponent()->GetComponentLocation();
+		FVector End = Char->HitActor->GetActorLocation();
+
+		FHitResult Hit;
+		FCollisionQueryParams Params;
+		Params.AddIgnoredActor(Char);
+		Params.AddIgnoredActor(Char->HitActor);
+
+		bool bHit = GetWorld()->LineTraceSingleByChannel(
+			Hit,
+			Start,
+			End,
+			ECC_Visibility,
+			Params
+		);
+
+		if (bHit && Hit.GetActor()->ActorHasTag("Wall"))
+		{
+			UnGrab();
+		}
+	}
 	
 	//FVector Start = Char->GetFirstPersonCameraComponent()->GetComponentLocation();
 	//FVector End = Char->GetFirstPersonCameraComponent()->GetForwardVector() * Distance + Start;
