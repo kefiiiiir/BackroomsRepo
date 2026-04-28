@@ -55,9 +55,11 @@ class ABackroomsRepoCharacter : public ACharacter
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category=Input, meta=(AllowPrivateAccess = "true"))
 	UInputAction* SprintAction;
 	
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category=Input, meta=(AllowPrivateAccess = "true"))
+	UInputAction* LanternAction;
+	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category=Input, meta=(AllowPrivateAccess = "true"))
 	UPhysicalAnimationComponent* PhysicalAnimationComponent;
-	
 
 public:
 	ABackroomsRepoCharacter();
@@ -164,6 +166,8 @@ public:
 	UPROPERTY(BlueprintReadOnly, EditAnywhere)
 	USpotLightComponent* SpotLight;
 
+	UFUNCTION(BlueprintCallable)
+	void Lantern();
 	
 	virtual void Tick(float DeltaTime) override;
 	
