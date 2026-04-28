@@ -66,6 +66,9 @@ ABackroomsRepoCharacter::ABackroomsRepoCharacter()
 	Beam = CreateDefaultSubobject<UNiagaraComponent>(TEXT("Beam"));
 	Beam->SetupAttachment(GetMesh(), FName("RightHand"));
 	
+	SpotLight = CreateDefaultSubobject<USpotLightComponent>(TEXT("SpotLight"));
+	SpotLight->SetupAttachment(GetMesh(), FName("Head"));
+	
 	bReplicates = true;
 	
 	PrimaryActorTick.bCanEverTick = true;

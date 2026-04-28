@@ -8,6 +8,7 @@
 #include "Logging/LogMacros.h"
 #include "PhysicsEngine/PhysicalAnimationComponent.h"
 #include "Components/BoxComponent.h"
+#include "Components/SpotLightComponent.h"
 #include "PhysicsEngine/PhysicsConstraintComponent.h"
 #include "PhysicsEngine/PhysicsHandleComponent.h"
 #include "BackroomsRepoCharacter.generated.h"
@@ -159,6 +160,9 @@ public:
 	
 	UPROPERTY()
 	bool bMonsterSpawnedForThisPickup = false;
+	
+	UPROPERTY(BlueprintReadOnly, EditAnywhere)
+	USpotLightComponent* SpotLight;
 
 	
 	virtual void Tick(float DeltaTime) override;
