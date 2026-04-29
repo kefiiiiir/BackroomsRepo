@@ -66,6 +66,9 @@ ABackroomsRepoCharacter::ABackroomsRepoCharacter()
 	Beam = CreateDefaultSubobject<UNiagaraComponent>(TEXT("Beam"));
 	Beam->SetupAttachment(GetMesh(), FName("RightHand"));
 	
+	SpotLight = CreateDefaultSubobject<USpotLightComponent>(TEXT("SpotLight"));
+	SpotLight->SetupAttachment(GetMesh(), FName("Head"));
+	
 	bReplicates = true;
 	
 	PrimaryActorTick.bCanEverTick = true;
@@ -110,6 +113,9 @@ void ABackroomsRepoCharacter::SetupPlayerInputComponent(UInputComponent* PlayerI
 		// Grabbing
 		EnhancedInputComponent->BindAction(GrabAction, ETriggerEvent::Started, GrabComponent, &UGrabComponent::Grab);
 		EnhancedInputComponent->BindAction(GrabAction, ETriggerEvent::Completed, GrabComponent, &UGrabComponent::UnGrab);
+		
+		// Lantern
+		EnhancedInputComponent->BindAction(LanternAction, ETriggerEvent::Started, this, &ABackroomsRepoCharacter::Lantern);
 
 	}
 	else
@@ -166,6 +172,17 @@ void ABackroomsRepoCharacter::UnlockItem(FName ItemID)
 				UnlockWidgetInstance->CallFunctionByNameWithArguments(TEXT("PlayAppearence"), *GLog, nullptr, true);
 			}
 		}
+	}
+}
+
+void ABackroomsRepoCharacter::Lantern()
+{
+	if (SpotLight->IsVisible())
+	{
+		SpotLight->SetVisibility(false);
+	} else
+	{
+		SpotLight->SetVisibility(true);
 	}
 }
 

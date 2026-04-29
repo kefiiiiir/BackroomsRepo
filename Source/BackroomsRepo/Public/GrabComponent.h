@@ -51,14 +51,12 @@ public:
 	bool bHoldLook;
 	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	bool bGrabbing;
-	
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	float Distance;
 	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	AActor* GrabbedObject;
 	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	bool bIsGrabbing;
 	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Sounds")

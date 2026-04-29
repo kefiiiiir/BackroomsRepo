@@ -8,6 +8,7 @@
 #include "Logging/LogMacros.h"
 #include "PhysicsEngine/PhysicalAnimationComponent.h"
 #include "Components/BoxComponent.h"
+#include "Components/SpotLightComponent.h"
 #include "PhysicsEngine/PhysicsConstraintComponent.h"
 #include "PhysicsEngine/PhysicsHandleComponent.h"
 #include "BackroomsRepoCharacter.generated.h"
@@ -54,9 +55,11 @@ class ABackroomsRepoCharacter : public ACharacter
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category=Input, meta=(AllowPrivateAccess = "true"))
 	UInputAction* SprintAction;
 	
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category=Input, meta=(AllowPrivateAccess = "true"))
+	UInputAction* LanternAction;
+	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category=Input, meta=(AllowPrivateAccess = "true"))
 	UPhysicalAnimationComponent* PhysicalAnimationComponent;
-	
 
 public:
 	ABackroomsRepoCharacter();
@@ -159,7 +162,12 @@ public:
 	
 	UPROPERTY()
 	bool bMonsterSpawnedForThisPickup = false;
+	
+	UPROPERTY(BlueprintReadOnly, EditAnywhere)
+	USpotLightComponent* SpotLight;
 
+	UFUNCTION(BlueprintCallable)
+	void Lantern();
 	
 	virtual void Tick(float DeltaTime) override;
 	
