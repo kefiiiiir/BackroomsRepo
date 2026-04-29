@@ -69,6 +69,9 @@ ABackroomsRepoCharacter::ABackroomsRepoCharacter()
 	SpotLight = CreateDefaultSubobject<USpotLightComponent>(TEXT("SpotLight"));
 	SpotLight->SetupAttachment(GetMesh(), FName("Head"));
 	
+	Phone = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Phone"));
+	Phone->SetupAttachment(GetMesh());
+	
 	bReplicates = true;
 	
 	PrimaryActorTick.bCanEverTick = true;

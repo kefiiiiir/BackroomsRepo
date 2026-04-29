@@ -21,6 +21,7 @@ class UInputMappingContext;
 struct FInputActionValue;
 class UGrabComponent;
 class UBoxComponent;
+class UStaticMeshComponent;
 
 DECLARE_LOG_CATEGORY_EXTERN(LogTemplateCharacter, Log, All);
 
@@ -168,6 +169,9 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 	void Lantern();
+	
+	UPROPERTY(EditAnywhere, BlueprintReadOnly)
+	UStaticMeshComponent* Phone;
 	
 	virtual void Tick(float DeltaTime) override;
 	
