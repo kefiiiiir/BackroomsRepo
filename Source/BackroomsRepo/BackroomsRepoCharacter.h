@@ -173,6 +173,9 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)
 	UStaticMeshComponent* Phone;
 	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	int Lives;
+	
 	virtual void Tick(float DeltaTime) override;
 	
 	

@@ -65,4 +65,7 @@ public:
 	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Physics")
 	float DamageMultiplier = 0.01f;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Physics")
+	bool bInSafeZone;
 };

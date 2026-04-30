@@ -25,7 +25,7 @@ void UGrabComponent::Grab()
 	ABackroomsRepoCharacter* Char = Cast<ABackroomsRepoCharacter>(GetOwner());
 	if (!Char) return;
 	
-	Char->Beam->Activate();
+	Char->Beam->SetVisibility(true);
 	
 	//FVector Start = Char->GetFirstPersonCameraComponent()->GetComponentLocation();
 	//FVector End = Char->GetFirstPersonCameraComponent()->GetForwardVector() * Distance + Start;
@@ -59,13 +59,13 @@ void UGrabComponent::UnGrab()
 	ABackroomsRepoCharacter* Char = Cast<ABackroomsRepoCharacter>(GetOwner());
 	if (!Char) return;
 	
-	Char->Beam->Deactivate();
+	Char->Beam->SetVisibility(false);
 	
 	if (bIsGrabbing)
 	{
 		Char->PhysicsHandle->ReleaseComponent();
 		bIsGrabbing = false;
-		GrabbedObject = nullptr;
+		Char->HitActor = nullptr;
 	}
 	
 	UGameplayStatics::PlaySoundAtLocation(GetWorld(), UnGrabSound, Char->GetActorLocation());
@@ -107,6 +107,7 @@ void UGrabComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorC
 			UnGrab();
 		}
 	}
+	
 	
 	//FVector Start = Char->GetFirstPersonCameraComponent()->GetComponentLocation();
 	//FVector End = Char->GetFirstPersonCameraComponent()->GetForwardVector() * Distance + Start;
