@@ -119,6 +119,9 @@ void ABackroomsRepoCharacter::SetupPlayerInputComponent(UInputComponent* PlayerI
 		
 		// Lantern
 		EnhancedInputComponent->BindAction(LanternAction, ETriggerEvent::Started, this, &ABackroomsRepoCharacter::Lantern);
+		
+		// Crouch
+		EnhancedInputComponent->BindAction(CrouchAction, ETriggerEvent::Started, this, &ABackroomsRepoCharacter::ToggleCrouch);
 
 	}
 	else
@@ -189,24 +192,49 @@ void ABackroomsRepoCharacter::Lantern()
 	}
 }
 
+void ABackroomsRepoCharacter::ToggleCrouch()
+{
+	bWantsToCrouch = !bWantsToCrouch;
+
+	if (bWantsToCrouch)
+	{
+		TargetCapsuleHeight = CrouchingHeight;
+		GetCharacterMovement()->MaxWalkSpeed = CrouchSpeed;
+	}
+	else
+	{
+		TargetCapsuleHeight = StandingHeight;
+		GetCharacterMovement()->MaxWalkSpeed = WalkSpeed;
+		
+	}
+}
+
 void ABackroomsRepoCharacter::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 	
-	if (bIsSprinting && Stamina > 0.f)
-	{
-		GetCharacterMovement()->MaxWalkSpeed = SprintSpeed;
+	// ----------------------------
+	// STAMINA SYSTEM
+	// ----------------------------
 
+	if (bIsSprinting && !bWantsToCrouch && Stamina > 0.f)
+	{
+		// drain stamina only while actually sprinting AND not crouched
 		Stamina = FMath::Clamp(
 			Stamina - StaminaDrainRate * DeltaTime,
 			0.f,
 			MaxStamina
 		);
+
+		// auto-stop sprint when empty
+		if (Stamina <= 0.f)
+		{
+			bIsSprinting = false;
+		}
 	}
 	else
 	{
-		GetCharacterMovement()->MaxWalkSpeed = WalkSpeed;
-
+		// regen when not sprinting
 		Stamina = FMath::Clamp(
 			Stamina + StaminaRegenRate * DeltaTime,
 			0.f,
@@ -214,10 +242,36 @@ void ABackroomsRepoCharacter::Tick(float DeltaTime)
 		);
 	}
 
+	float TargetSpeed = WalkSpeed;
+
+	if (bWantsToCrouch)
+	{
+		TargetSpeed = CrouchSpeed;
+	}
+	else if (bIsSprinting && Stamina > 0.f)
+	{
+		TargetSpeed = SprintSpeed;
+	}
+
+	GetCharacterMovement()->MaxWalkSpeed = TargetSpeed;
+
+
 	if (Stamina <= 0.f)
 		bIsSprinting = false;
 	
 	CurrentFOV = FMath::FInterpTo(CurrentFOV, TargetFOV, DeltaTime, 5.0f);
 	
 	GetFirstPersonCameraComponent()->SetFieldOfView(CurrentFOV);
+	
+	float Current = GetCapsuleComponent()->GetUnscaledCapsuleHalfHeight();
+
+	float NewHeight = FMath::FInterpTo(
+		Current,
+		TargetCapsuleHeight,
+		DeltaTime,
+		CrouchInterpSpeed
+	);
+
+	GetCapsuleComponent()->SetCapsuleHalfHeight(NewHeight);
+
 }

@@ -8,5 +8,5 @@ enum class ELanguage : uint8
 {
 	RU,
 	JP,
-	NL
+	EN
 };

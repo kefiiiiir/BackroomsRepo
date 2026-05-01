@@ -17,7 +17,7 @@ struct FLocalizedSound
 	USoundBase* JP = nullptr;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)
-	USoundBase* NL = nullptr;
+	USoundBase* EN = nullptr;
 
 	USoundBase* Get(ELanguage Lang) const
 	{
@@ -25,7 +25,7 @@ struct FLocalizedSound
 		{
 		case ELanguage::RU: return RU;
 		case ELanguage::JP: return JP;
-		case ELanguage::NL: return NL;
+		case ELanguage::EN: return EN;
 		default: return RU;
 		}
 	}

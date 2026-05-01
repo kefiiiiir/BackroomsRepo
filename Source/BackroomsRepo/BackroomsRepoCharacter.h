@@ -59,6 +59,9 @@ class ABackroomsRepoCharacter : public ACharacter
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category=Input, meta=(AllowPrivateAccess = "true"))
 	UInputAction* LanternAction;
 	
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category=Input, meta=(AllowPrivateAccess = "true"))
+	UInputAction* CrouchAction;
+	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category=Input, meta=(AllowPrivateAccess = "true"))
 	UPhysicalAnimationComponent* PhysicalAnimationComponent;
 
@@ -132,6 +135,12 @@ public:
 	float StaminaRegenRate;
 	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Walk")
+	float CrouchSpeed;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Walk")
+	float CrouchHeight;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Walk")
 	bool bIsSprinting;
 	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Walk")
@@ -148,6 +157,9 @@ public:
 	
 	UPROPERTY()
 	float CurrentFOV;
+	
+	UFUNCTION(BlueprintCallable)
+	void ToggleCrouch();
 	
 	UPROPERTY()
 	TArray<FName> UnlockedItems;
@@ -169,12 +181,26 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 	void Lantern();
-	
+
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)
 	UStaticMeshComponent* Phone;
 	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	int Lives;
+	
+	bool bWantsToCrouch = false;
+
+	float CurrentCapsuleHeight = 96.f;
+	float TargetCapsuleHeight = 96.f;
+
+	UPROPERTY(EditAnywhere)
+	float CrouchInterpSpeed = 10.f;
+
+	UPROPERTY(EditAnywhere)
+	float StandingHeight = 96.f;
+
+	UPROPERTY(EditAnywhere)
+	float CrouchingHeight = 55.f;
 	
 	virtual void Tick(float DeltaTime) override;
 	
