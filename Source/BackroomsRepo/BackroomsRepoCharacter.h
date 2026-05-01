@@ -64,6 +64,8 @@ class ABackroomsRepoCharacter : public ACharacter
 	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category=Input, meta=(AllowPrivateAccess = "true"))
 	UPhysicalAnimationComponent* PhysicalAnimationComponent;
+	
+	float NewHeight;
 
 public:
 	ABackroomsRepoCharacter();
@@ -188,6 +190,7 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	int Lives;
 	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	bool bWantsToCrouch = false;
 
 	float CurrentCapsuleHeight = 96.f;

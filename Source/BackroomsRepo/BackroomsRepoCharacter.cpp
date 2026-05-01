@@ -265,7 +265,7 @@ void ABackroomsRepoCharacter::Tick(float DeltaTime)
 	
 	float Current = GetCapsuleComponent()->GetUnscaledCapsuleHalfHeight();
 
-	float NewHeight = FMath::FInterpTo(
+	NewHeight = FMath::FInterpTo(
 		Current,
 		TargetCapsuleHeight,
 		DeltaTime,
