@@ -64,6 +64,14 @@ public:
 	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Sounds")
 	USoundWave* UnGrabSound;
+	
+	float StrengthFactor;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	float Stiffness;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	float Damping;
 
 private:
 

@@ -163,7 +163,7 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void ToggleCrouch();
 	
-	UPROPERTY()
+	UPROPERTY(BlueprintReadWrite)
 	TArray<FName> UnlockedItems;
 	
 	UPROPERTY(EditDefaultsOnly, Category = "UI")
@@ -204,6 +204,21 @@ public:
 
 	UPROPERTY(EditAnywhere)
 	float CrouchingHeight = 55.f;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	USceneComponent* VorSpawn;
+	
+	UFUNCTION(BlueprintCallable)
+	void SpawnMonster();
+	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	float VorSpawnChance;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	bool bSafeZone;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	TSubclassOf<ACharacter> MonsterClass;
 	
 	virtual void Tick(float DeltaTime) override;
 	

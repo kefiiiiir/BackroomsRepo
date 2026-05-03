@@ -7,7 +7,9 @@
 #include "GameFramework/PlayerController.h"
 #include "Components/SkeletalMeshComponent.h"
 #include "Kismet/GameplayStatics.h"
-#include "PhysicsEngine/BodyInstance.h"
+#include "NiagaraComponent.h"
+#include "Chaos/PBDJointConstraintData.h"
+#include "GeometryCollection/Facades/CollectionPositionTargetFacade.h"
 
 UGrabComponent::UGrabComponent()
 {
@@ -21,78 +23,125 @@ void UGrabComponent::BeginPlay()
 
 void UGrabComponent::Grab()
 {
-	
 	ABackroomsRepoCharacter* Char = Cast<ABackroomsRepoCharacter>(GetOwner());
 	if (!Char) return;
-	
+
+	if (!Char->Beam || !Char->PhysicsHandle || !Char->GetFirstPersonCameraComponent())
+		return;
+
 	Char->Beam->SetVisibility(true);
+
+	FVector Start = Char->GetFirstPersonCameraComponent()->GetComponentLocation();
+	FVector End = Start + Char->GetFirstPersonCameraComponent()->GetForwardVector() * Distance;
+
+	if (Distance <= 0.f)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("Grab Distance invalid"));
+		return;
+	}
+
+	FHitResult Hit;
+	FCollisionQueryParams Params;
+	Params.AddIgnoredActor(Char);
+
+	bool bHit = GetWorld()->LineTraceSingleByChannel(
+		Hit,
+		Start,
+		End,
+		ECC_Visibility,
+		Params
+	);
+
+	if (!bHit) return;
+
+	UPrimitiveComponent* HitComp = Hit.GetComponent();
+	AActor* HitActor = Hit.GetActor();
+
+	if (!HitActor || !HitComp || !HitComp->IsSimulatingPhysics())
+		return;
+
+	GrabbedObject = HitActor;
+
+	Char->PhysicsHandle->GrabComponentAtLocationWithRotation(
+		HitComp,
+		NAME_None,
+		HitComp->GetComponentLocation(),
+		HitComp->GetComponentRotation()
+	);
+
+	bIsGrabbing = true;
+
+	if (GrabSound)
+	{
+		UGameplayStatics::PlaySoundAtLocation(GetWorld(), GrabSound, HitComp->GetComponentLocation());
+	}
 	
-	//FVector Start = Char->GetFirstPersonCameraComponent()->GetComponentLocation();
-	//FVector End = Char->GetFirstPersonCameraComponent()->GetForwardVector() * Distance + Start;
-	
-	//FHitResult Hit;
-	
-	//FCollisionQueryParams Params;
-	//Params.AddIgnoredActor(Char);
-	
-	//bool bHit = GetWorld()->LineTraceSingleByChannel(
-		//Hit,
-		//Start,
-		//End,
-		//ECC_PhysicsBody,
-		//Params
-	//);
-	
-	//if (bHit)
-	//{
-		//GrabbedObject = Hit.GetActor();
+	if (GrabbedObject)
+	{
+		StrengthFactor = FMath::Clamp(Hit.GetComponent()->GetMass(), 0.01, 1.f);
 		
-		//Char->PhysicsHandle->GrabComponentAtLocationWithRotation(Hit.GetComponent(), NAME_None, Hit.GetComponent()->GetComponentLocation(), Hit.GetComponent()->GetComponentRotation());
-		//bIsGrabbing = true;
+		Char->PhysicsHandle->SetLinearStiffness(StrengthFactor * Stiffness);
+		Char->PhysicsHandle->SetLinearDamping(StrengthFactor * Damping);
 		
-		//UGameplayStatics::PlaySoundAtLocation(GetWorld(), GrabSound, Hit.GetComponent()->GetComponentLocation());
-	//}
+		AGrababbleObject* Object = Cast<AGrababbleObject>(GrabbedObject);
+		
+		if (Object)
+			Char->UnlockItem(Object->ID);
+		
+		Char->SpawnMonster();
+	}
 }
 
 void UGrabComponent::UnGrab()
 {
 	ABackroomsRepoCharacter* Char = Cast<ABackroomsRepoCharacter>(GetOwner());
 	if (!Char) return;
-	
-	Char->Beam->SetVisibility(false);
-	
-	if (bIsGrabbing)
+
+	if (Char->Beam)
+		Char->Beam->SetVisibility(false);
+
+	if (bIsGrabbing && Char->PhysicsHandle)
 	{
 		Char->PhysicsHandle->ReleaseComponent();
 		bIsGrabbing = false;
-		Char->HitActor = nullptr;
 	}
-	
-	UGameplayStatics::PlaySoundAtLocation(GetWorld(), UnGrabSound, Char->GetActorLocation());
+
+	GrabbedObject = nullptr;
+
+	if (UnGrabSound)
+	{
+		UGameplayStatics::PlaySoundAtLocation(GetWorld(), UnGrabSound, Char->GetActorLocation());
+	}
 }
 
 
 void UGrabComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
 {
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
-	
+
 	ABackroomsRepoCharacter* Char = Cast<ABackroomsRepoCharacter>(GetOwner());
 	if (!Char) return;
-	
+
+	UCameraComponent* Cam = Char->GetFirstPersonCameraComponent();
+	if (!Cam || !Char->PhysicsHandle) return;
+
 	APlayerController* PC = Cast<APlayerController>(Char->GetController());
 	if (!PC) return;
-	
+
 	bHoldLook = PC->IsInputKeyDown(LookHoldKey);
-	
-	if (bIsGrabbing && Char->HitActor)
+
+	// -----------------------------
+	// GRABBED STATE CHECK
+	// -----------------------------
+	if (bIsGrabbing && GrabbedObject)
 	{
-		FVector Start = Char->GetFirstPersonCameraComponent()->GetComponentLocation();
-		FVector End = Char->HitActor->GetActorLocation();
+		FVector Start = Cam->GetComponentLocation();
+		FVector End = GrabbedObject->GetActorLocation();
 
 		FHitResult Hit;
 		FCollisionQueryParams Params;
 		Params.AddIgnoredActor(Char);
-		Params.AddIgnoredActor(Char->HitActor);
+		Params.AddIgnoredActor(GrabbedObject);
 
 		bool bHit = GetWorld()->LineTraceSingleByChannel(
 			Hit,
@@ -102,15 +151,26 @@ void UGrabComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorC
 			Params
 		);
 
-		if (bHit && Hit.GetActor()->ActorHasTag("Wall"))
+		if (bHit && Hit.GetActor() && Hit.GetActor()->ActorHasTag("Wall"))
 		{
 			UnGrab();
+			return;
 		}
 	}
+
+	// -----------------------------
+	// TARGET UPDATE (SAFE)
+	// -----------------------------
+	FVector Start = Cam->GetComponentLocation();
+	FVector End = Start + Cam->GetForwardVector() * Distance;
+
+	if (Distance > 0.f)
+	{
+		Char->PhysicsHandle->SetTargetLocation(End);
+	}
 	
-	
-	//FVector Start = Char->GetFirstPersonCameraComponent()->GetComponentLocation();
-	//FVector End = Char->GetFirstPersonCameraComponent()->GetForwardVector() * Distance + Start;
-	
-	//Char->PhysicsHandle->SetTargetLocation(End);
+	Char->Beam->SetVariableVec3(
+		FName("User.BeamEnd"),
+		End
+	);
 }

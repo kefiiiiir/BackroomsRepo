@@ -14,6 +14,7 @@
 #include "GameFramework/CharacterMovementComponent.h"
 #include "Kismet/KismetSystemLibrary.h"
 #include "PhysicsEngine/PhysicalAnimationComponent.h"
+#include "TimerManager.h"
 
 DEFINE_LOG_CATEGORY(LogTemplateCharacter);
 
@@ -71,6 +72,9 @@ ABackroomsRepoCharacter::ABackroomsRepoCharacter()
 	
 	Phone = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Phone"));
 	Phone->SetupAttachment(GetMesh());
+	
+	VorSpawn = CreateDefaultSubobject<USceneComponent>(TEXT("VorSpawn"));
+	VorSpawn->SetupAttachment(GetMesh());
 	
 	bReplicates = true;
 	
@@ -206,6 +210,34 @@ void ABackroomsRepoCharacter::ToggleCrouch()
 		TargetCapsuleHeight = StandingHeight;
 		GetCharacterMovement()->MaxWalkSpeed = WalkSpeed;
 		
+	}
+}
+
+void ABackroomsRepoCharacter::SpawnMonster()
+{
+	if (VorSpawnChance > FMath::RandRange(0.f, 100.f) && !bSafeZone)
+	{
+		FActorSpawnParameters SpawnParams;
+		SpawnParams.Owner = this;
+		
+		if (!MonsterClass) return;
+		
+		GetWorld()->SpawnActor<ACharacter>(MonsterClass, VorSpawn->GetComponentLocation(), VorSpawn->GetComponentRotation(), SpawnParams);
+		
+		FTimerHandle TimerHandle;
+
+		GetWorld()->GetTimerManager().SetTimer(
+			TimerHandle,
+			[this]()
+			{
+				if (GrabComponent)
+				{
+					GrabComponent->UnGrab();
+				}
+			},
+			0.2f,
+			false
+		);
 	}
 }
 
