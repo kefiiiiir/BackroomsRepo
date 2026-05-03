@@ -119,7 +119,7 @@ void ABackroomsRepoCharacter::SetupPlayerInputComponent(UInputComponent* PlayerI
 		
 		// Grabbing
 		EnhancedInputComponent->BindAction(GrabAction, ETriggerEvent::Started, GrabComponent, &UGrabComponent::Grab);
-		EnhancedInputComponent->BindAction(GrabAction, ETriggerEvent::Completed, GrabComponent, &UGrabComponent::UnGrab);
+		//EnhancedInputComponent->BindAction(GrabAction, ETriggerEvent::Completed, GrabComponent, &UGrabComponent::UnGrab);
 		
 		// Lantern
 		EnhancedInputComponent->BindAction(LanternAction, ETriggerEvent::Started, this, &ABackroomsRepoCharacter::Lantern);

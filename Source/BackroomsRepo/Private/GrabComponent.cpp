@@ -95,7 +95,7 @@ void UGrabComponent::UnGrab()
 	ABackroomsRepoCharacter* Char = Cast<ABackroomsRepoCharacter>(GetOwner());
 	if (!Char) return;
 
-	if (bIsGrabbing && Char->PhysicsHandle)
+	if (Char->PhysicsHandle)
 	{
 		Char->PhysicsHandle->ReleaseComponent();
 		bIsGrabbing = false;
