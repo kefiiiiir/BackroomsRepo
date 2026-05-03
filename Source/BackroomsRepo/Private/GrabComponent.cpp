@@ -29,8 +29,6 @@ void UGrabComponent::Grab()
 	if (!Char->Beam || !Char->PhysicsHandle || !Char->GetFirstPersonCameraComponent())
 		return;
 
-	Char->Beam->SetVisibility(true);
-
 	FVector Start = Char->GetFirstPersonCameraComponent()->GetComponentLocation();
 	FVector End = Start + Char->GetFirstPersonCameraComponent()->GetForwardVector() * Distance;
 
@@ -96,9 +94,6 @@ void UGrabComponent::UnGrab()
 {
 	ABackroomsRepoCharacter* Char = Cast<ABackroomsRepoCharacter>(GetOwner());
 	if (!Char) return;
-
-	if (Char->Beam)
-		Char->Beam->SetVisibility(false);
 
 	if (bIsGrabbing && Char->PhysicsHandle)
 	{
