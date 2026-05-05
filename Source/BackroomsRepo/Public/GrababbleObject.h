@@ -34,6 +34,9 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Money")
 	int Price;
 	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="General")
+	float SpawnChance;
+	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Money")
 	UWidgetComponent* WidgetComponent;
 	

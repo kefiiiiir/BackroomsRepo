@@ -26,5 +26,8 @@ public:
 	UTexture2D* Icon;
 	
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)
-	int32 Price;
+	int32 MinPrice;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadOnly)
+	int32 MaxPrice;
 };

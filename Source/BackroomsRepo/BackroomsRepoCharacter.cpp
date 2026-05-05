@@ -241,6 +241,48 @@ void ABackroomsRepoCharacter::SpawnMonster()
 	}
 }
 
+void ABackroomsRepoCharacter::AddItem(FName ItemID, int32 Amount)
+{
+	if (Amount <= 0) return;
+
+	int32& Count = Inventory.FindOrAdd(ItemID);
+	Count += Amount;
+
+	UE_LOG(LogTemplateCharacter, Log, TEXT("Added %d x %s (Total: %d)"), Amount, *ItemID.ToString(), Count);
+}
+
+bool ABackroomsRepoCharacter::RemoveItem(FName ItemID, int32 Amount)
+{
+	if (Amount <= 0) return false;
+
+	if (int32* Found = Inventory.Find(ItemID))
+	{
+		if (*Found >= Amount)
+		{
+			*Found -= Amount;
+
+			if (*Found <= 0)
+			{
+				Inventory.Remove(ItemID);
+			}
+
+			UE_LOG(LogTemplateCharacter, Log, TEXT("Removed %d x %s"), Amount, *ItemID.ToString());
+			return true;
+		}
+	}
+
+	return false;
+}
+
+int32 ABackroomsRepoCharacter::GetItemCount(FName ItemID) const
+{
+	if (const int32* Found = Inventory.Find(ItemID))
+	{
+		return *Found;
+	}
+	return 0;
+}
+
 void ABackroomsRepoCharacter::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);

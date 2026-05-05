@@ -220,6 +220,20 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	TSubclassOf<ACharacter> MonsterClass;
 	
+	// INVENTORY
+	// Simple inventory: ItemID -> Quantity
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Inventory")
+	TMap<FName, int32> Inventory;
+	
+	UFUNCTION(BlueprintCallable)
+	void AddItem(FName ItemID, int32 Amount = 1);
+
+	UFUNCTION(BlueprintCallable)
+	bool RemoveItem(FName ItemID, int32 Amount = 1);
+
+	UFUNCTION(BlueprintCallable)
+	int32 GetItemCount(FName ItemID) const;
+	
 	virtual void Tick(float DeltaTime) override;
 	
 	
