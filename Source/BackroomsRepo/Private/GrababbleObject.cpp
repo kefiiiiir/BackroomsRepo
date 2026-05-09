@@ -47,7 +47,7 @@ void AGrababbleObject::OnMeshHit(
 
 	float ImpactStrength = NormalImpulse.Size();
 
-	// cooldown for hit sound only (not damage)
+
 	float CurrentTime = GetWorld()->GetTimeSeconds();
 	if (CurrentTime - LastHitTime < HitCooldown)
 		return;
@@ -56,10 +56,10 @@ void AGrababbleObject::OnMeshHit(
 
 	if (ImpactStrength < breakImpulseThreshold)
 		return;
-	// Convert impact → damage
+
 	float Damage = ImpactStrength * DamageMultiplier;
 
-	// Optional clamp so weak hits still matter but don't spam 0.0001 damage
+
 	Damage = FMath::Clamp(Damage, 1.0f, Price);
 
 	Price -= FMath::RoundToInt(Damage);
@@ -70,7 +70,7 @@ void AGrababbleObject::OnMeshHit(
 		Mesh->GetComponentLocation()
 	);
 
-	// broken condition
+
 	if (Price <= 0)
 	{
 		Price = 0;
