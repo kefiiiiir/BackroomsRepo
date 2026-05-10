@@ -35,17 +35,6 @@ public:
 	/** When held (default: RMB), arms are forced to extend toward the view direction. */
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Arms|LookHold")
 	FKey LookHoldKey = EKeys::RightMouseButton;
-
-	/** Extra rotation applied after aiming bones along the camera forward (X forward, Z up basis). Tune per skeleton. */
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Arms|LookHold")
-	FRotator ArmWorldRotationOffset = FRotator::ZeroRotator;
-
-	/** How quickly arm orientation catches up to the view (higher = snappier). */
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Arms|LookHold", meta = (ClampMin = "0.1"))
-	float ArmRotationInterpSpeed = 12.f;
-	
-	UPROPERTY(BlueprintReadWrite)
-	FRotator ArmAimRotation;
 	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	bool bHoldLook;
